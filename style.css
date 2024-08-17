@@ -1,103 +1,98 @@
-/* General Styles */
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: #00A2E8;
+    font-family: "Comic Sans MS", sans-serif;
+    background-color: #00AFFF;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     height: 100vh;
+    margin: 0;
 }
 
 .container {
-    text-align: center;
-    background-color: #B7EAF7;
-    border-radius: 12px;
+    background-color: #bfefff;
+    border-radius: 15px;
     padding: 20px;
-    width: 300px;
+    text-align: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-    color: white;
-    font-size: 36px;
     margin-bottom: 20px;
+    font-size: 2em;
 }
 
-/* Board Styles */
-#board {
+.leaderboard {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    font-size: 1.2em;
+}
+
+.board {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
-    grid-gap: 10px;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    justify-content: center;
     margin-bottom: 20px;
 }
 
 .cell {
-    background-color: #E1F6FC;
-    border-radius: 8px;
-    width: 80px;
-    height: 80px;
+    background-color: #fff;
+    border-radius: 12px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font-size: 36px;
-    font-weight: bold;
+    align-items: center;
+    font-size: 3em;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease;
+    color: #000;
 }
 
 .cell:hover {
-    background-color: #A1DFF2;
+    transform: scale(1.1);
 }
 
-/* Game Status */
-#gameStatus {
-    font-size: 18px;
+#resultText {
+    font-size: 1.5em;
     margin-bottom: 20px;
-    color: #005F77;
-}
-
-/* Controls */
-.controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 }
 
 #restartBtn {
-    background-color: #00A2E8;
-    color: white;
+    background-color: #00AFFF;
+    color: #fff;
     border: none;
-    border-radius: 12px;
     padding: 10px 20px;
-    font-size: 16px;
+    border-radius: 10px;
     cursor: pointer;
-    margin-bottom: 15px;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
 }
 
 #restartBtn:hover {
-    background-color: #007BA8;
+    background-color: #007ACC;
 }
 
 .mode-switch {
+    margin-top: 10px;
     display: flex;
+    justify-content: center;
+    gap: 10px;
 }
 
-.mode-switch button {
-    background-color: #B7EAF7;
-    border: 2px solid #00A2E8;
-    color: #005F77;
+.mode {
+    background-color: #00AFFF;
+    color: #fff;
+    border: none;
     padding: 10px 20px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    flex: 1;
+    transition: background-color 0.2s ease;
 }
 
-.mode-switch button:hover {
-    background-color: #A1DFF2;
+.mode:hover {
+    background-color: #007ACC;
 }
 
-.mode-switch .active {
-    background-color: #00A2E8;
-    color: white;
+.mode.active {
+    background-color: #007ACC;
 }
