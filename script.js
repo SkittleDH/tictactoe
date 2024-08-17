@@ -31,8 +31,8 @@ const winConditions = [
 
 const handleCellPlayed = (cell, index) => {
     board[index] = currentPlayer;
-    cell.textContent = currentPlayer;
-    cell.style.color = currentPlayer === 'X' ? 'purple' : 'darkblue';
+    cell.innerHTML = `<span>${currentPlayer}</span>`;
+    cell.querySelector('span').style.color = currentPlayer === 'X' ? 'purple' : 'darkblue';
 };
 
 const handlePlayerChange = () => {
@@ -112,21 +112,33 @@ const botMove = () => {
 };
 
 const handleRestartGame = () => {
-    gameActive = true;
-    currentPlayer = 'X';
-    board = ['', '', '', '', '', '', '', '', ''];
-    resultText.textContent = '';
-    cells.forEach(cell => {
-        cell.textContent = '';
-        cell.style.color = '#000';
-    });
+    const container = document.querySelector('.container');
+    container.classList.add('fade-out');
+    setTimeout(() => {
+        gameActive = true;
+        currentPlayer = 'X';
+        board = ['', '', '', '', '', '', '', '', ''];
+        resultText.textContent = '';
+        cells.forEach(cell => {
+            cell.innerHTML = '';
+        });
+        container.classList.remove('fade-out');
+        container.classList.add('fade-in');
+    }, 500);
 };
 
 const switchMode = (event) => {
     isBotMode = event.target.id === 'botBtn';
     twoPlayerBtn.classList.toggle('active', !isBotMode);
     botBtn.classList.toggle('active', isBotMode);
-    handleRestartGame();
+    
+    const container = document.querySelector('.container');
+    container.classList.add('fade-out');
+    setTimeout(() => {
+        handleRestartGame();
+        container.classList.remove('fade-out');
+        container.classList.add('fade-in');
+    }, 500);
 };
 
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
