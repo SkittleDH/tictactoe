@@ -1,0 +1,103 @@
+/* General Styles */
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #00A2E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: #B7EAF7;
+    border-radius: 12px;
+    padding: 20px;
+    width: 300px;
+}
+
+h1 {
+    color: white;
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+/* Board Styles */
+#board {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    grid-gap: 10px;
+    margin-bottom: 20px;
+}
+
+.cell {
+    background-color: #E1F6FC;
+    border-radius: 8px;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cell:hover {
+    background-color: #A1DFF2;
+}
+
+/* Game Status */
+#gameStatus {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #005F77;
+}
+
+/* Controls */
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#restartBtn {
+    background-color: #00A2E8;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+#restartBtn:hover {
+    background-color: #007BA8;
+}
+
+.mode-switch {
+    display: flex;
+}
+
+.mode-switch button {
+    background-color: #B7EAF7;
+    border: 2px solid #00A2E8;
+    color: #005F77;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1;
+}
+
+.mode-switch button:hover {
+    background-color: #A1DFF2;
+}
+
+.mode-switch .active {
+    background-color: #00A2E8;
+    color: white;
+}
