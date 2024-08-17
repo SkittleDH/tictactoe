@@ -1,122 +1,135 @@
-// DOM Elements
 const cells = document.querySelectorAll('.cell');
-const gameStatus = document.getElementById('gameStatus');
+const resultText = document.getElementById('resultText');
 const restartBtn = document.getElementById('restartBtn');
 const twoPlayerBtn = document.getElementById('twoPlayerBtn');
 const botBtn = document.getElementById('botBtn');
 
-// Game variables
-let player = 'O';
-let gameActive = true;
-let boardState = ['', '', '', '', '', '', '', '', ''];
-let botMode = false;
+// Leaderboard elements
+const xWinsElement = document.getElementById('xWins');
+const oWinsElement = document.getElementById('oWins');
+const drawsElement = document.getElementById('draws');
 
-// Win conditions for the game
+let xWins = 0;
+let oWins = 0;
+let draws = 0;
+
+let currentPlayer = 'X';
+let gameActive = true;
+let board = ['', '', '', '', '', '', '', '', ''];
+let isBotMode = false;
+
 const winConditions = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6]  // Diagonals
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
 ];
 
-// Handle cell click events
-const handleCellClick = (event) => {
-    const clickedCell = event.target;
-    const clickedIndex = parseInt(clickedCell.getAttribute('data-index'));
-
-    if (boardState[clickedIndex] !== '' || !gameActive) return;
-
-    updateCell(clickedIndex, player);
-    checkGameResult();
-
-    if (botMode && player === 'X' && gameActive) {
-        setTimeout(botMove, 500); // Delay for bot move
-    }
+const handleCellPlayed = (cell, index) => {
+    board[index] = currentPlayer;
+    cell.textContent = currentPlayer;
+    cell.style.color = currentPlayer === 'X' ? 'purple' : 'darkblue';
 };
 
-// Update cell with player's move
-const updateCell = (index, currentPlayer) => {
-    boardState[index] = currentPlayer;
-    cells[index].textContent = currentPlayer;
-    cells[index].style.cursor = 'default';
+const handlePlayerChange = () => {
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
 };
 
-// Check the game result after each move
-const checkGameResult = () => {
-    let roundWon = checkWinner();
-    if (roundWon) {
-        gameStatus.textContent = `${player} Wins!!!`;
-        gameActive = false;
-        return;
-    }
-
-    let roundDraw = !boardState.includes('');
-    if (roundDraw) {
-        gameStatus.textContent = `It's a Draw!`;
-        gameActive = false;
-        return;
-    }
-
-    player = player === 'O' ? 'X' : 'O';
-    gameStatus.textContent = `Player ${player}'s Turn`;
-};
-
-// Check if there's a winner
-const checkWinner = () => {
-    let winner = false;
-    for (let condition of winConditions) {
-        const [a, b, c] = condition;
-        if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
-            highlightWinningCells(condition);
-            winner = true;
+const handleResultValidation = () => {
+    let roundWon = false;
+    for (let i = 0; i < winConditions.length; i++) {
+        const winCondition = winConditions[i];
+        let a = board[winCondition[0]];
+        let b = board[winCondition[1]];
+        let c = board[winCondition[2]];
+        if (a === '' || b === '' || c === '') {
+            continue;
+        }
+        if (a === b && b === c) {
+            roundWon = true;
             break;
         }
     }
-    return winner;
+
+    if (roundWon) {
+        resultText.textContent = `${currentPlayer} Wins!`;
+        if (currentPlayer === 'X') {
+            xWins++;
+            xWinsElement.textContent = xWins;
+        } else {
+            oWins++;
+            oWinsElement.textContent = oWins;
+        }
+        gameActive = false;
+        return;
+    }
+
+    let roundDraw = !board.includes('');
+    if (roundDraw) {
+        resultText.textContent = `It's a Draw!`;
+        draws++;
+        drawsElement.textContent = draws;
+        gameActive = false;
+        return;
+    }
+
+    handlePlayerChange();
 };
 
-// Highlight the winning cells
-const highlightWinningCells = (winningCombination) => {
-    winningCombination.forEach(index => {
-        cells[index].style.backgroundColor = '#8BD0E3';
+const handleCellClick = (event) => {
+    const clickedCell = event.target;
+    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+    if (board[clickedCellIndex] !== '' || !gameActive) {
+        return;
+    }
+
+    handleCellPlayed(clickedCell, clickedCellIndex);
+    handleResultValidation();
+
+    if (isBotMode && gameActive) {
+        setTimeout(botMove, 500);
+    }
+};
+
+const botMove = () => {
+    let availableCells = [];
+    board.forEach((cell, index) => {
+        if (cell === '') {
+            availableCells.push(index);
+        }
     });
+
+    let randomIndex = availableCells[Math.floor(Math.random() * availableCells.length)];
+    let botCell = cells[randomIndex];
+
+    handleCellPlayed(botCell, randomIndex);
+    handleResultValidation();
 };
 
-// Restart the game
-const restartGame = () => {
-    player = 'O';
+const handleRestartGame = () => {
     gameActive = true;
-    boardState = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = 'X';
+    board = ['', '', '', '', '', '', '', '', ''];
+    resultText.textContent = '';
     cells.forEach(cell => {
         cell.textContent = '';
-        cell.style.backgroundColor = '#E1F6FC';
-        cell.style.cursor = 'pointer';
+        cell.style.color = '#000';
     });
-    gameStatus.textContent = `Player ${player}'s Turn`;
 };
 
-// Bot move logic
-const botMove = () => {
-    const availableCells = boardState.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
-    const randomCellIndex = Math.floor(Math.random() * availableCells.length);
-    const chosenCell = availableCells[randomCellIndex];
-
-    updateCell(chosenCell, 'X');
-    checkGameResult();
+const switchMode = (event) => {
+    isBotMode = event.target.id === 'botBtn';
+    twoPlayerBtn.classList.toggle('active', !isBotMode);
+    botBtn.classList.toggle('active', isBotMode);
+    handleRestartGame();
 };
 
-// Switch game mode (2 Player or Bot)
-const switchMode = (mode) => {
-    botMode = mode === 'Bot';
-    twoPlayerBtn.classList.toggle('active', !botMode);
-    botBtn.classList.toggle('active', botMode);
-    restartGame();
-};
-
-// Event listeners
 cells.forEach(cell => cell.addEventListener('click', handleCellClick));
-restartBtn.addEventListener('click', restartGame);
-twoPlayerBtn.addEventListener('click', () => switchMode('2P'));
-botBtn.addEventListener('click', () => switchMode('Bot'));
-
-// Initial game setup
-switchMode('2P');
+restartBtn.addEventListener('click', handleRestartGame);
+twoPlayerBtn.addEventListener('click', switchMode);
+botBtn.addEventListener('click', switchMode);
