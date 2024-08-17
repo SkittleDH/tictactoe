@@ -15,6 +15,7 @@ body {
     text-align: center;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     transition: opacity 0.5s ease, transform 0.5s ease;
+    opacity: 1;
 }
 
 h1 {
@@ -26,19 +27,31 @@ h1 {
     display: flex;
     justify-content: space-around;
     margin-bottom: 20px;
-    font-size: 1.5em;
+    font-size: 2em;
+    padding: 10px;
+    background-color: #e0f7ff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.leaderboard p {
-    margin: 0;
+.leaderboard div {
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 #xWins {
     color: purple;
+    background-color: #e3d1ef;
 }
 
 #oWins {
     color: darkblue;
+    background-color: #cce0f5;
+}
+
+#draws {
+    color: grey;
+    background-color: #e0e0e0;
 }
 
 .board {
@@ -122,4 +135,3 @@ h1 {
     transform: scale(1);
     transition: opacity 0.5s ease, transform 0.5s ease;
 }
-
